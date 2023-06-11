@@ -41,6 +41,21 @@ namespace BHC_PRACTICAL
 
             ProcessDebts(debts, grossValueOfTobaccoDelivered, commission);
 
+            double rebate = 0.05;
+
+            double netValueOfTobaccoDeliveredAfterRebate = ApplyRebate(grossValueOfTobaccoDelivered, rebate);
+            Console.WriteLine($"Net value of tobacco delivered after rebate: ${netValueOfTobaccoDeliveredAfterRebate}");
+
+            Rebate rebateToApply = new Rebate()
+            {
+                isFlatRate = false,
+                flatRateAmount = 10,
+                isFixedRatePerKg = true,
+                fixedRatePerKgAmount = 0.02
+            };
+
+            ProcessSale(bales, debts, rebateToApply);
+
             Console.ReadLine();
         }
         static double CalculateGross(List<Bale> bales)
@@ -91,6 +106,48 @@ namespace BHC_PRACTICAL
 
             Console.WriteLine($"Total commission: ${debts.Sum(debt => debt.amount * commission)}");
             Console.WriteLine($"Remaining gross: ${grossValueOfTobaccoDelivered}");
+        }
+        static double ApplyRebate(double grossValueOfTobaccoDelivered, double rebate)
+        {
+            double rebateAmount = grossValueOfTobaccoDelivered * rebate;
+
+            double netValueOfTobaccoDeliveredAfterRebate = grossValueOfTobaccoDelivered + rebateAmount;
+
+            return netValueOfTobaccoDeliveredAfterRebate;
+        }
+        static void ProcessSale(List<Bale> bales, List<Debt> debts, Rebate rebateToApply)
+        {
+            double grossValueOfTobaccoDelivered = bales.Sum(bale => bale.price * bale.mass);
+
+            Console.WriteLine($"Gross value of tobacco delivered: ${grossValueOfTobaccoDelivered}");
+
+            if (rebateToApply.isFlatRate)
+            {
+                grossValueOfTobaccoDelivered += rebateToApply.flatRateAmount;
+                Console.WriteLine($"Applied flat rate rebate of ${rebateToApply.flatRateAmount}. Gross value of tobacco delivered after rebate: ${grossValueOfTobaccoDelivered}");
+            }
+            else if (rebateToApply.isFixedRatePerKg)
+            {
+                double rebateAmount = bales.Sum(bale => bale.mass * rebateToApply.fixedRatePerKgAmount);
+                grossValueOfTobaccoDelivered += rebateAmount;
+
+                Console.WriteLine($"Applied fixed rate per kg rebate of ${rebateToApply.fixedRatePerKgAmount}. Gross value of tobacco delivered after rebate: ${grossValueOfTobaccoDelivered}");
+            }
+
+            foreach (var debt in debts.OrderBy(debt => debt.priority))
+            {
+                if (debt.hasInterest)
+                {
+                    debt.amount += debt.amount * debt.interestRate;
+                    Console.WriteLine($"Added interest to debt with priority {debt.priority}. Amount: ${debt.amount}");
+                }
+
+                grossValueOfTobaccoDelivered -= debt.amount;
+
+                Console.WriteLine($"Processed debt with priority {debt.priority}. Amount: ${debt.amount}");
+            }
+
+            
         }
     }
 }
