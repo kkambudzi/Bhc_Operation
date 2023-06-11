@@ -30,6 +30,17 @@ namespace BHC_PRACTICAL
             double netValueOfTobaccoDeliveredAfterDebt = CalculateNet(grossValueOfTobaccoDelivered, commission, debt, interestRate);
             Console.WriteLine($"Net value of tobacco delivered after debt: ${netValueOfTobaccoDeliveredAfterDebt}");
 
+            List<Debt> debts = new List<Debt>()
+        {
+            new Debt() { priority = 1, amount = 1000, hasInterest = true, interestRate = 0.1 },
+            new Debt() { priority = 2, amount = 500, hasInterest = false },
+            new Debt() { priority = 3, amount = 2000, hasInterest = true, interestRate = 0.05 }
+        };
+
+
+
+            ProcessDebts(debts, grossValueOfTobaccoDelivered, commission);
+
             Console.ReadLine();
         }
         static double CalculateGross(List<Bale> bales)
@@ -58,6 +69,28 @@ namespace BHC_PRACTICAL
             double netValueOfTobaccoDeliveredAfterDebt = grossValueOfTobaccoDelivered - totalDebt - commissionOnDebt;
 
             return netValueOfTobaccoDeliveredAfterDebt;
+        }
+
+        static void ProcessDebts(List<Debt> debts, double grossValueOfTobaccoDelivered, double commission)
+        {
+            debts.Sort((d1, d2) => d1.priority.CompareTo(d2.priority));
+
+            foreach (var debt in debts)
+            {
+                if (debt.hasInterest)
+                {
+                    debt.amount += debt.amount * debt.interestRate;
+                }
+
+                double commissionOnDebt = debt.amount * commission;
+
+                grossValueOfTobaccoDelivered -= (debt.amount + commissionOnDebt);
+
+                Console.WriteLine($"Processed debt with priority {debt.priority}. Amount: ${debt.amount}. Commission on debt: ${commissionOnDebt}");
+            }
+
+            Console.WriteLine($"Total commission: ${debts.Sum(debt => debt.amount * commission)}");
+            Console.WriteLine($"Remaining gross: ${grossValueOfTobaccoDelivered}");
         }
     }
 }
