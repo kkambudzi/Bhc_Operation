@@ -20,11 +20,26 @@ namespace BHC_PRACTICAL
             double grossValueOfTobaccoDelivered = CalculateGross(bales);
             Console.WriteLine($"Gross value of tobacco delivered: ${grossValueOfTobaccoDelivered}");
 
+            double netValueOfTobaccoDeliveredAfterTaxes = CalculateNet(bales);
+            Console.WriteLine($"Net value of tobacco delivered after taxes: ${netValueOfTobaccoDeliveredAfterTaxes}");
+
             Console.ReadLine();
         }
         static double CalculateGross(List<Bale> bales)
         {
             return bales.Sum(bale => bale.mass * bale.price);
+        }
+        static double CalculateNet(List<Bale> bales)
+        {
+            double grossValueOfTobaccoDelivered = CalculateGross(bales);
+
+            double tax1 = grossValueOfTobaccoDelivered * 0.003;
+            double tax2 = (grossValueOfTobaccoDelivered / 100) * 1.5 + (bales.Sum(bale => bale.mass) * 0.02);
+            double tax3 = bales.Count * 5;
+
+            double netValueOfTobaccoDeliveredAfterTaxes = grossValueOfTobaccoDelivered - tax1 - tax2 - tax3;
+
+            return netValueOfTobaccoDeliveredAfterTaxes;
         }
     }
 }
