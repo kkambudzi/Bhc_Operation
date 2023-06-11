@@ -23,6 +23,13 @@ namespace BHC_PRACTICAL
             double netValueOfTobaccoDeliveredAfterTaxes = CalculateNet(bales);
             Console.WriteLine($"Net value of tobacco delivered after taxes: ${netValueOfTobaccoDeliveredAfterTaxes}");
 
+            double commission = 0.005;
+            double debt = 500;
+            double interestRate = 0.1;
+
+            double netValueOfTobaccoDeliveredAfterDebt = CalculateNet(grossValueOfTobaccoDelivered, commission, debt, interestRate);
+            Console.WriteLine($"Net value of tobacco delivered after debt: ${netValueOfTobaccoDeliveredAfterDebt}");
+
             Console.ReadLine();
         }
         static double CalculateGross(List<Bale> bales)
@@ -40,6 +47,17 @@ namespace BHC_PRACTICAL
             double netValueOfTobaccoDeliveredAfterTaxes = grossValueOfTobaccoDelivered - tax1 - tax2 - tax3;
 
             return netValueOfTobaccoDeliveredAfterTaxes;
+        }
+
+        static double CalculateNet(double grossValueOfTobaccoDelivered, double commission, double debt, double interestRate)
+        {
+            double interest = debt * interestRate;
+            double totalDebt = debt + interest;
+            double commissionOnDebt = totalDebt * commission;
+
+            double netValueOfTobaccoDeliveredAfterDebt = grossValueOfTobaccoDelivered - totalDebt - commissionOnDebt;
+
+            return netValueOfTobaccoDeliveredAfterDebt;
         }
     }
 }
