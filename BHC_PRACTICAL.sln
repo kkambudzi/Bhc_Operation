@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33529.622
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BHC_PRACTICAL", "BHC_PRACTICAL\BHC_PRACTICAL.csproj", "{B743EDEC-8E72-4B01-B015-32F0F4EA559F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B743EDEC-8E72-4B01-B015-32F0F4EA559F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B743EDEC-8E72-4B01-B015-32F0F4EA559F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B743EDEC-8E72-4B01-B015-32F0F4EA559F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B743EDEC-8E72-4B01-B015-32F0F4EA559F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0CB30E3A-1AFE-4D53-B4F4-112C56D127AF}
+	EndGlobalSection
+EndGlobal
