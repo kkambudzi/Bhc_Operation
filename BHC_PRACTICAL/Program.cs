@@ -58,6 +58,30 @@ namespace BHC_PRACTICAL
 
             BaleExtensions.Reworks(bales);
 
+
+            // Create a list of bales to select from
+            List<Bale> bales1 = new List<Bale>();
+            bales.Add(new Bale("110000010", "TMOS", 4.50, 120));
+            bales.Add(new Bale("110000011", "TLOS", 5.50, 110));
+            bales.Add(new Bale("110000012", "TXLF", 350.00, 130));
+            bales.Add(new Bale("110000013", "TMOX", 0.50, 90));
+            bales.Add(new Bale("110000014", "TM1L", 1.50, 80));
+
+            // Set the agreed price and number of bales dynamically
+            double agreedPrice = 5.00;
+            int numberOfBales = 3;
+
+            // Select the qualifying bales
+            List<Bale> qualifyingBales = SelectBale(bales, agreedPrice, numberOfBales);
+
+            // Get the totals for the selected bales
+            Tuple<int, double, double, double> totals = GetTotals(qualifyingBales);
+
+            Console.WriteLine("Total Number of Bales Selected: " + totals.Item1);
+            Console.WriteLine("Total Mass Selected: " + totals.Item2);
+            Console.WriteLine("Average Price Selected: " + totals.Item3);
+            Console.WriteLine("Total Gross Selected: " + totals.Item4);
+
             Console.ReadLine();
         }
         static double CalculateGross(List<Bale> bales)
@@ -150,6 +174,28 @@ namespace BHC_PRACTICAL
             }
 
             
+        }
+        static List<Bale> SelectBale(List<Bale> bales, double agreedPrice, int numberOfBales)
+        {
+            // Filter out the bales with grades containing X
+            List<Bale> filteredBales = bales.Where(b => !b.grade.Contains("X")).ToList();
+
+            // Sort the filtered bales by price in descending order
+            filteredBales.Sort((b1, b2) => -1 * b1.price.CompareTo(b2.price));
+
+            // Select the qualifying bales
+            List<Bale> qualifyingBales = filteredBales.Where(b => b.price >= agreedPrice).Take(numberOfBales).ToList();
+
+            return qualifyingBales;
+        }
+        static Tuple<int, double, double, double> GetTotals(List<Bale> selectedBales)
+        {
+            int totalNumber = selectedBales.Count;
+            double totalMass = selectedBales.Sum(b => b.mass);
+            double averagePrice = selectedBales.Average(b => b.price);
+            double totalGross = selectedBales.Sum(b => (b.mass * b.price));
+
+            return Tuple.Create(totalNumber, totalMass, averagePrice, totalGross);
         }
     }
 }
