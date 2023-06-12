@@ -56,6 +56,8 @@ namespace BHC_PRACTICAL
 
             ProcessSale(bales, debts, rebateToApply);
 
+            BaleExtensions.Reworks(bales);
+
             Console.ReadLine();
         }
         static double CalculateGross(List<Bale> bales)

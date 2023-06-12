@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BHC_PRACTICAL
 {
-    class Bale
+  public  class Bale
     {
         public string grower;
         public double mass;
